@@ -99,7 +99,6 @@ class SettingsController extends Controller{
 					$em->getReference('AppBundle:DisabilityCategory', $formData['iddisability_category'])
 				);
 			$disability->setTeacherSpecialityRequired($formData['teacher_speciality_required']);
-			$disability->setGeneralCategory($formData['general_category']);
 			$disability->setDisabilityDescription($formData['disability_description']);
 			$em->persist($disability);
 			$em->flush();

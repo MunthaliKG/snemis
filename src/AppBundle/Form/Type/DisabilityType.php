@@ -48,15 +48,9 @@ class DisabilityType extends AbstractType{
 			'expanded' => true
 			)
 		)
-		->add('general_category','choice', array(
-			'label' => 'Type',
-			'choices' => ['disability'=>'disability', 'special need'=>'special need'],
-			'placeholder' => '--Select Type--',
-			'constraints' => array(new Assert\NotBlank())
-			)
-		)
 		->add('disability_description','textarea', array(
 			'label'=>'Condition Description',
+			'required' => false
 			)
 		)
 		->add('levels', 'choice', array(

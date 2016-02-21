@@ -46,3 +46,46 @@
         <ProtectScenarios>False</ProtectScenarios>
     </WorksheetOptions>
 </Worksheet>
+
+<Worksheet ss:Name="Available Resources">
+<Table x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
+    <Row>
+        <Cell ss:StyleID="s3"><Data ss:Type="String">Item</Data></Cell>
+        <Cell ss:MergeRight="2" ss:StyleID="s16"><Data ss:Type="String">Quantity</Data></Cell>
+
+        {% if isSchool %}
+            <Cell ss:Index="5" ss:StyleID="s3"><Data ss:Type="String">Available</Data></Cell>
+            <Cell ss:StyleID="s3"><Data ss:Type="String">Provided By</Data></Cell>
+        {% else %}
+            <Cell ss:Index="5" ss:StyleID="s3"><Data ss:Type="String">Number of schools having resource</Data></Cell>
+        {% endif %}
+    </Row>
+    <Row>
+        <Cell><Data ss:Type="String"></Data></Cell>
+        <Cell ss:StyleID="s3"><Data ss:Type="String">Available</Data></Cell>
+        <Cell ss:StyleID="s3"><Data ss:Type="String">In use</Data></Cell>
+        <Cell ss:StyleID="s3"><Data ss:Type="String">Required</Data></Cell>
+    </Row>
+    {% for row,needs in teachingNeeds %}
+        <Row>
+            <Cell><Data ss:Type="String">{{ needs['needname'] }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ needs['quantity_available'] }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ needs['quantity_in_use'] }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ needs['quantity_required'] }}</Data></Cell>
+            <Cell><Data ss:Type="{% if isSchool %}String{% else %}Number{% endif %}">{{ needs['available'] }}</Data></Cell>
+            {% if isSchool %}
+                <Cell><Data ss:Type="String">{{ needs['provided_by'] }}</Data></Cell>
+            {% endif %}
+        </Row>
+    {% endfor %}
+</Table>
+<WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+    <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+    </PageSetup>
+    <ProtectObjects>False</ProtectObjects>
+    <ProtectScenarios>False</ProtectScenarios>
+</WorksheetOptions>
+</Worksheet>

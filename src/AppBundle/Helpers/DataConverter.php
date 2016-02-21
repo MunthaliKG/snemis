@@ -11,24 +11,24 @@ class DataConverter{
 	function __construct(Connection $connection){
 		$this->connection = $connection;
 	}
-        //export to excel and download
-        function excelDownload($db){
-            //EXCEL DOWNLOAD FILE
-	
-            include("/mysql_excel/mysql_excel.inc.php");
+	//export to excel and download
+	function excelDownload($db){
+		//EXCEL DOWNLOAD FILE
 
-            $month = date('n');
-            $year = date('Y');
-            $month_full = str_replace('','_', date('F Y')); 			
+		include("/mysql_excel/mysql_excel.inc.php");
 
-            $date = date("d_M_Y");
+		$month = date('n');
+		$year = date('Y');
+		$month_full = str_replace('','_', date('F Y'));
 
-            $import=new \HarImport();
-            //$import->openDatabase("localhost","root","","snlis");
+		$date = date("d_M_Y");
 
-            $import->ImportData($db,"snlis.xls",true); //To force to download
-	
-        }
+		$import=new \HarImport();
+		//$import->openDatabase("localhost","root","","snlis");
+
+		$import->ImportData($db,"snlis.xls",true); //To force to download
+
+	}
 	//convert an array of need ids to a string of comma separated ids
 	function convertToCommaString($array, $removeDelimitingQuotes = false){
 		$escaped = array_map(array($this->connection, 'quote'), $array); //escape each element of the array
@@ -48,10 +48,10 @@ class DataConverter{
 		$quote = "'";
 		$unquoted = array_map(
 		/*remove surrounding quotes from every element of the array*/
-		function($item) use ($quote) { 
-    		return trim($item, $quote); 
-		}, 
-		$array );
+				function($item) use ($quote) {
+					return trim($item, $quote);
+				},
+				$array );
 		return $unquoted;
 	}
 	function countArray($array, $key, $value){
@@ -64,57 +64,57 @@ class DataConverter{
 		}
 		return $count;
 	}
-        function countArrayMultipleBool($array, $conditions){
-		$count = 0; 
-		foreach($array as $element){
-			if(is_array($element)){
-                            $passed = true;
-                            foreach ($conditions as $key => $condition){
-                                $value = (is_numeric($element[$key]))? $element[$key] : '\''.$element[$key].'\'';
-                                if(!eval("return ".$value.$condition.";")){
-                                    $passed = false;
-                                }
-                            }
-                            if($passed){
-                                $count++;
-                            }			
-			}
-		}
-		return $count;
-	}
-        function countArrayMultipleGtEt($array, $conditions){
-		$count = 0; 
-		foreach($array as $element){
-			if(is_array($element)){
-                            $passed = true;
-                            foreach ($conditions as $key => $condition){
-                                //echo "return \"".$element[$key]."\"".$condition.";<br>";
-                                if($element[$key] >= $condition){
-                                    $passed = false;
-                                }
-                            }
-                            if($passed){
-                                $count++;
-                            }			
-			}
-		}
-		return $count;
-	}
-    function countArrayMultiple($array, $values){
+	function countArrayMultipleBool($array, $conditions){
 		$count = 0;
-                
 		foreach($array as $element){
-                    
 			if(is_array($element)){
-                $passed = true;
-                foreach ($values as $key => $value){
-                    if($element[$key] != $value){
-                        $passed = false;
-                    }
-                }
-                if($passed){
-                    $count++;
-                }			
+				$passed = true;
+				foreach ($conditions as $key => $condition){
+					$value = (is_numeric($element[$key]))? $element[$key] : '\''.$element[$key].'\'';
+					if(!eval("return ".$value.$condition.";")){
+						$passed = false;
+					}
+				}
+				if($passed){
+					$count++;
+				}
+			}
+		}
+		return $count;
+	}
+	function countArrayMultipleGtEt($array, $conditions){
+		$count = 0;
+		foreach($array as $element){
+			if(is_array($element)){
+				$passed = true;
+				foreach ($conditions as $key => $condition){
+					//echo "return \"".$element[$key]."\"".$condition.";<br>";
+					if($element[$key] >= $condition){
+						$passed = false;
+					}
+				}
+				if($passed){
+					$count++;
+				}
+			}
+		}
+		return $count;
+	}
+	function countArrayMultiple($array, $values){
+		$count = 0;
+
+		foreach($array as $element){
+
+			if(is_array($element)){
+				$passed = true;
+				foreach ($values as $key => $value){
+					if($element[$key] != $value){
+						$passed = false;
+					}
+				}
+				if($passed){
+					$count++;
+				}
 			}
 		}
 		return $count;
@@ -141,7 +141,7 @@ class DataConverter{
 		return $resultArray;
 	}
 	function selectFromArrayBool($array, $key, $condition, $keyIsString = false){
-                $quote = ($keyIsString)? "'" : '';
+		$quote = ($keyIsString)? "'" : '';
 		$resultArray = array();
 		foreach($array as $element){
 			//echo 'Method found';
@@ -182,7 +182,7 @@ class DataConverter{
 		return $min;
 	}
 	function serializeColumn(&$array, $key){
-		
+
 	}
 
 }

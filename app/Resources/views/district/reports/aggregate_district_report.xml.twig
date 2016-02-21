@@ -90,7 +90,7 @@
     {% if specialNeeds is defined %}
         {% include 'school/reports/special_needs.xml.twig' %}
     {% endif %}
-    {% if learningMaterials %}
+    {% if learningMaterials is defined%}
         {% include 'school/reports/materials.xml.twig' %}
     {% endif %}
 </Workbook>

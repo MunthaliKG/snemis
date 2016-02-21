@@ -1,109 +1,149 @@
 <Worksheet ss:Name="Summary of LWDs">
-  <Table x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
+    <Table x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
 
-  <Row>
-    <Cell ss:MergeRight="2" ss:StyleID="s3"><Data ss:Type="String">Enrollments Dropouts and Transfers</Data></Cell>
-  </Row>
-  <Row>
-    <Cell ss:MergeRight="2" ss:StyleID="s3"><Data ss:Type="String">LWD Enrolled this year</Data></Cell>
-    <Cell ss:MergeRight="2" ss:Index="4" ss:StyleID="s3"><Data ss:Type="String">Transfers in</Data></Cell>
-    <Cell ss:MergeRight="2" ss:Index="4" ss:StyleID="s3"><Data ss:Type="String">Transfers out</Data></Cell>
-    <Cell ss:MergeRight="2" ss:Index="7" ss:StyleID="s3"><Data ss:Type="String">Dropouts</Data></Cell>
-    <Cell ss:MergeRight="2" ss:Index="10" ss:StyleID="s3"><Data ss:Type="String">Completed Std 8</Data></Cell>
-  </Row>
-  <Row>
-    <Cell><Data ss:Type="String">Boys</Data></Cell>
-    <Cell><Data ss:Type="String">Girls</Data></Cell>
-    <Cell><Data ss:Type="String">Total</Data></Cell>
-    <Cell><Data ss:Type="String">Boys</Data></Cell>
-    <Cell><Data ss:Type="String">Girls</Data></Cell>
-    <Cell><Data ss:Type="String">Total</Data></Cell>
-    <Cell><Data ss:Type="String">Boys</Data></Cell>
-    <Cell><Data ss:Type="String">Girls</Data></Cell>
-    <Cell><Data ss:Type="String">Total</Data></Cell>
-    <Cell><Data ss:Type="String">Boys</Data></Cell>
-    <Cell><Data ss:Type="String">Girls</Data></Cell>
-    <Cell><Data ss:Type="String">Total</Data></Cell>
-    <Cell><Data ss:Type="String">Boys</Data></Cell>
-    <Cell><Data ss:Type="String">Girls</Data></Cell>
-    <Cell><Data ss:Type="String">Total</Data></Cell>
- </Row>
- <Row>
-  <Cell><Data ss:Type="Number">{{ enrolledBoys }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ enrolledGirls }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ enrolledTotal }}</Data></Cell>
+        <Row>
+            <Cell ss:MergeRight="2" ss:StyleID="s3"><Data ss:Type="String">Enrollments Dropouts and Transfers</Data></Cell>
+        </Row>
+        <Row>
+            <Cell ss:MergeRight="2" ss:StyleID="s3"><Data ss:Type="String">LWD Enrolled this year</Data></Cell>
+            <Cell ss:MergeRight="2" ss:Index="4" ss:StyleID="s3"><Data ss:Type="String">Transfers in</Data></Cell>
+            <Cell ss:MergeRight="2" ss:Index="4" ss:StyleID="s3"><Data ss:Type="String">Transfers out</Data></Cell>
+            <Cell ss:MergeRight="2" ss:Index="7" ss:StyleID="s3"><Data ss:Type="String">Dropouts</Data></Cell>
+            <Cell ss:MergeRight="2" ss:Index="10" ss:StyleID="s3"><Data ss:Type="String">Completed Std 8</Data></Cell>
+        </Row>
+        <Row>
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+        </Row>
+        <Row>
+            <Cell><Data ss:Type="Number">{{ enrolledBoys }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ enrolledGirls }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ enrolledTotal }}</Data></Cell>
 
-  <Cell><Data ss:Type="Number">{{ numBoysTRin }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ numGirlsTRin }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ totalTransferIn }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ numBoysTRin }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ numGirlsTRin }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ totalTransferIn }}</Data></Cell>
 
-  <Cell><Data ss:Type="Number">{{ numBoysTRout }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ numGirlsTRout }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ totalTransferOut }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ numBoysTRout }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ numGirlsTRout }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ totalTransferOut }}</Data></Cell>
 
-  <Cell><Data ss:Type="Number">{{ dropoutBoys }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ dropoutGirls }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ dropoutTotal }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ dropoutBoys }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ dropoutGirls }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ dropoutTotal }}</Data></Cell>
 
-  <Cell><Data ss:Type="Number">{{ completedBoys }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ completedGirls }}</Data></Cell>
-  <Cell><Data ss:Type="Number">{{ completedTotal }}</Data></Cell>
-</Row>
-<Row ss:Index="6">
-  <Cell ss:StyleID="s3"><Data ss:Type="String">LWDs by Class, Sex and Age</Data></Cell>
-</Row>
-<Row>
-  <Cell ss:StyleID="s3" ss:MergeDown="1"><Data ss:Type="String">Age</Data></Cell>
-  {% set index = 2 %}
-    {% for counter in 1..8 %}
-      <Cell ss:StyleID="s3" ss:MergeRight="1"
-      {% if index != 2 %}
-        ss:Index="{{index}}"
-      {% endif %}>
-      {% set index = index + 2 %}
-    <Data ss:Type="String">Std{{counter}}</Data>
-  </Cell>
-  {% endfor %}
-  <Cell ss:StyleID="s3" ss:MergeRight="1" ss:Index="{{index}}"><Data ss:Type="String">Total</Data></Cell>
-</Row>
-<Row>
-  {% set index = 2 %}
-  {% for counter in 1..9 %}
-    <Cell ss:Index="{{index}}" ss:StyleID="s3"><Data ss:Type="String">M</Data></Cell>
-    <Cell ss:Index="{{index + 1}}" ss:StyleID="s3"><Data ss:Type="String">F</Data></Cell>
-    {% set index = index + 2 %}
-  {% endfor %}
-</Row>
-{% for age,ages in learnersBy %}
-  <Row>
-    <Cell ss:StyleID="s16"><Data ss:Type="String">{{ age }} </Data></Cell>
-    {% for std,stds in ages %}
-      <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.M }}</Data></Cell>
-      <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.F }}</Data></Cell>
-      {% if loop.last %}
-        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ ageBySex[age].M }}</Data></Cell>
-        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ ageBySex[age].F }}</Data></Cell>
-      {% endif %}
-    {% endfor %}
-  </Row>
-  {% if loop.last %}
+            <Cell><Data ss:Type="Number">{{ completedBoys }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ completedGirls }}</Data></Cell>
+            <Cell><Data ss:Type="Number">{{ completedTotal }}</Data></Cell>
+        </Row>
+        <Row ss:Index="6">
+            <Cell ss:StyleID="s3"><Data ss:Type="String">LWDs by Class, Sex and Age</Data></Cell>
+        </Row>
+        <Row>
+            <Cell ss:StyleID="s3" ss:MergeDown="1"><Data ss:Type="String">Age</Data></Cell>
+            {% set index = 2 %}
+            {% for counter in 1..8 %}
+                <Cell ss:StyleID="s3" ss:MergeRight="1"
+                        {% if index != 2 %}
+                    ss:Index="{{index}}"
+                        {% endif %}>
+                    {% set index = index + 2 %}
+                    <Data ss:Type="String">Std{{counter}}</Data>
+                </Cell>
+            {% endfor %}
+            <Cell ss:StyleID="s3" ss:MergeRight="1" ss:Index="{{index}}"><Data ss:Type="String">Total</Data></Cell>
+        </Row>
+        <Row>
+            {% set index = 2 %}
+            {% for counter in 1..9 %}
+                <Cell ss:Index="{{index}}" ss:StyleID="s3"><Data ss:Type="String">M</Data></Cell>
+                <Cell ss:Index="{{index + 1}}" ss:StyleID="s3"><Data ss:Type="String">F</Data></Cell>
+                {% set index = index + 2 %}
+            {% endfor %}
+        </Row>
+        {% for age,ages in learnersBy %}
+            <Row>
+                <Cell ss:StyleID="s16"><Data ss:Type="String">{{ age }} </Data></Cell>
+                {% for std,stds in ages %}
+                    <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.M }}</Data></Cell>
+                    <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.F }}</Data></Cell>
+                    {% if loop.last %}
+                        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ ageBySex[age].M }}</Data></Cell>
+                        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ ageBySex[age].F }}</Data></Cell>
+                    {% endif %}
+                {% endfor %}
+            </Row>
+            {% if loop.last %}
+                <Row>
+                    <Cell ss:StyleID="s16"><Data ss:Type="String">Total</Data></Cell>
+                    {% for std,stds in stdBySex %}
+                        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.M }}</Data></Cell>
+                        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.F }}</Data></Cell>
+                    {% endfor %}
+                </Row>
+            {% endif%}
+        {% endfor %}
+    </Table>
+    <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+        <PageSetup>
+            <Header x:Margin="0.3"/>
+            <Footer x:Margin="0.3"/>
+            <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+        </PageSetup>
+        <ProtectObjects>False</ProtectObjects>
+        <ProtectScenarios>False</ProtectScenarios>
+    </WorksheetOptions>
+</Worksheet>
+
+<Worksheet ss:Name="Dropouts">
+<Table x:FullColumns="1" x:FullRows="1" ss:DefaultRowHeight="15">
     <Row>
-      <Cell ss:StyleID="s16"><Data ss:Type="String">Total</Data></Cell>
-      {% for std,stds in stdBySex %}
-        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.M }}</Data></Cell>
-        <Cell ss:StyleID="s16"><Data ss:Type="Number">{{ stds.F }}</Data></Cell>
-      {% endfor %}
+        <Cell ss:StyleID="s3"><Data ss:Type="String"></Data></Cell>
+        <Cell ss:MergeRight="2" ss:StyleID="s3"><Data ss:Type="String">Dropouts</Data></Cell>
+        <Cell ss:MergeRight="2" ss:Index="5" ss:StyleID="s3"><Data ss:Type="String">Completed STD 8</Data></Cell>
     </Row>
-    {% endif%}
-  {% endfor %}
+    <tr>
+
+    </tr>
+    <Row>
+        <Cell ss:StyleID="s3"><Data ss:Type="String">Category Name</Data></Cell>
+        {% for i in 0..1 %}
+            <Cell><Data ss:Type="String">Boys</Data></Cell>
+            <Cell><Data ss:Type="String">Girls</Data></Cell>
+            <Cell><Data ss:Type="String">Total</Data></Cell>
+        {% endfor %}
+    </Row>
+    {% for category, dOrCs in categoryCounts %}
+        <Row>
+            <Cell><Data ss:Type="String">{{ category }}</Data></Cell>
+            {% for dOrCs,gender in dOrCs %}
+                <Cell><Data ss:Type="Number">{{ gender['M'] }}</Data></Cell>
+                <Cell><Data ss:Type="Number">{{ gender['F'] }}</Data></Cell>
+                <Cell><Data ss:Type="Number">{{ gender['F'] + gender['M'] }}</Data></Cell>
+            {% endfor %}
+        </Row>
+    {% endfor %}
 </Table>
 <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-  <PageSetup>
-    <Header x:Margin="0.3"/>
-    <Footer x:Margin="0.3"/>
-    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
-  </PageSetup>
-  <ProtectObjects>False</ProtectObjects>
-  <ProtectScenarios>False</ProtectScenarios>
+    <PageSetup>
+        <Header x:Margin="0.3"/>
+        <Footer x:Margin="0.3"/>
+        <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+    </PageSetup>
+    <ProtectObjects>False</ProtectObjects>
+    <ProtectScenarios>False</ProtectScenarios>
 </WorksheetOptions>
 </Worksheet>

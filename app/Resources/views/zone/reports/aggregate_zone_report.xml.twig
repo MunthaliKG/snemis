@@ -93,7 +93,7 @@ xmlns:html="http://www.w3.org/TR/REC-html40">
     {% if specialNeeds is defined %}
         {% include 'school/reports/special_needs.xml.twig' %}
     {% endif %}
-    {% if learningMaterials %}
+    {% if learningMaterials is defined %}
         {% include 'school/reports/materials.xml.twig' %}
     {% endif %}
 </Workbook>

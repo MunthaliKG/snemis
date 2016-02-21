@@ -430,7 +430,7 @@ class ZoneReportController extends Controller{
                             if(in_array(0, $formData['reports'])){//if the SN learners' details option was checked
                                     $options['snLearners'] = true;
                                     //get students enrolled this year
-                                    $enrolled = $connection->fetchAll('SELECT first_name, last_name, home_address, sex, dob, 
+                                    $enrolled = $connection->fetchAll('SELECT idlwd, first_name, last_name, home_address, sex, dob,
                                         distance_to_school, gfirst_name, glast_name, gsex, occupation, lwd_belongs_to_school.emiscode as emiscode, guardian_relationship,
                                         household_type FROM lwd NATURAL JOIN guardian NATURAL JOIN lwd_belongs_to_school NATURAL JOIN school
                                         WHERE idzone = ? AND `year` = ?', 
