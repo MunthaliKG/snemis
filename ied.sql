@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.1.12
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2016 at 09:59 AM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Feb 22, 2016 at 01:29 PM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `snlis`
 --
-CREATE DATABASE IF NOT EXISTS `snlis` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `snlis`;
 
 -- --------------------------------------------------------
 
@@ -28,32 +26,53 @@ USE `snlis`;
 -- Table structure for table `disability`
 --
 
-DROP TABLE IF EXISTS `disability`;
 CREATE TABLE IF NOT EXISTS `disability` (
-  `iddisability` int(11) NOT NULL,
+  `iddisability` int(11) NOT NULL AUTO_INCREMENT,
   `iddisability_category` int(11) DEFAULT NULL,
-  `teacher_speciality_required` set('VI','HI','LD') NOT NULL,
+  `teacher_speciality_required` set('VI','HI','LD','DB') NOT NULL,
   `disability_name` varchar(50) NOT NULL,
-  `disability_description` varchar(500) NOT NULL,
-  `general_category` enum('disability','special need') DEFAULT NULL COMMENT 'This attribute will differentiate between a learner with disability and one who just has a special need e.g orphans, refugees'
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='This table keeps track of each disability';
+  `disability_description` varchar(500) DEFAULT NULL,
+  `general_category` enum('disability','special need') DEFAULT NULL COMMENT 'This attribute will differentiate between a learner with disability and one who just has a special need e.g orphans, refugees',
+  PRIMARY KEY (`iddisability`),
+  KEY `fk_disability_disability_category1_idx` (`iddisability_category`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='This table keeps track of each disability' AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `disability`
 --
 
 INSERT INTO `disability` (`iddisability`, `iddisability_category`, `teacher_speciality_required`, `disability_name`, `disability_description`, `general_category`) VALUES
-(1, 5, 'VI', 'visual impairment', 'Characterized partial or complete loss of vision.', 'disability'),
+(1, 5, 'LD', 'visual impairment', 'Characterized partial or complete loss of vision.', 'disability'),
 (2, 4, 'HI', 'hearing impairment', 'Partial or total loss of hearing', 'disability'),
-(3, NULL, 'LD', 'dyslexia', '', 'disability'),
-(4, NULL, 'LD', 'autism', '', NULL),
+(3, 1, 'LD', 'dyslexia', '', 'disability'),
+(4, 6, 'LD', 'autism', '', NULL),
 (5, NULL, 'VI', 'albinism', '', 'disability'),
 (6, NULL, '', 'deaf blind', 'total visual impairment and total hearing impairment', 'disability'),
-(7, NULL, 'LD', 'attention deficit hyperactivity disorder', 'ADHD', 'disability'),
-(8, NULL, 'LD', 'emotional and behavioural difficulties', '', 'disability'),
-(9, 1, '', 'upper limb disability', '', 'disability'),
+(7, 6, 'LD', 'attention deficit hyperactivity disorder', 'ADHD', 'disability'),
+(8, 6, 'LD', 'emotional and behavioural difficulties', '', 'disability'),
+(9, 6, 'LD', 'upper limb disability', '', 'disability'),
 (10, 1, '', 'lower limb disability', '', 'disability'),
-(11, 1, 'VI,HI,LD', 'upper and lower limb disability', 'Learner with both lower and upper limbs problems', 'disability');
+(11, 1, 'VI,HI,LD', 'upper and lower limb disability', 'Learner with both lower and upper limbs problems', 'disability'),
+(15, 6, 'LD', 'Gifted and Talented Learner', NULL, 'special need'),
+(16, 6, 'LD', 'down syndrome', NULL, 'disability'),
+(17, 6, 'LD', 'cerebral palsy', NULL, 'disability'),
+(18, 6, 'LD', 'intellectual disability in reading', NULL, 'disability'),
+(19, 6, 'LD', 'intellectual disability in mathematics', NULL, 'disability'),
+(20, 6, 'LD', 'intellectual disability in writing', NULL, 'disability'),
+(21, 6, 'LD', 'intellectual disability in motor skills', NULL, 'disability'),
+(22, 6, 'LD', 'intellectual disability in language', NULL, 'disability'),
+(23, NULL, 'LD', 'orphan', NULL, 'special need'),
+(24, NULL, 'LD', 'street kid', NULL, 'special need'),
+(25, NULL, 'LD', 'child-headed family', NULL, 'special need'),
+(26, NULL, 'LD', 'working child', NULL, 'special need'),
+(27, NULL, '', 'refugee', NULL, 'special need'),
+(28, NULL, 'LD', 'child from broken home', NULL, 'special need'),
+(29, NULL, 'LD', 'ultra-poor', NULL, 'special need'),
+(30, 2, 'LD', 'asthma', NULL, 'special need'),
+(31, 2, 'LD', 'epilepsy', NULL, 'special need'),
+(32, 2, 'LD', 'HIV/AIDS', NULL, 'special need'),
+(33, 2, 'LD', 'developmental delays', NULL, 'special need'),
+(34, 2, 'LD', 'mental illness', NULL, 'special need');
 
 -- --------------------------------------------------------
 
@@ -61,11 +80,11 @@ INSERT INTO `disability` (`iddisability`, `iddisability_category`, `teacher_spec
 -- Table structure for table `disability_category`
 --
 
-DROP TABLE IF EXISTS `disability_category`;
 CREATE TABLE IF NOT EXISTS `disability_category` (
-  `iddisability_category` int(11) NOT NULL,
-  `category_name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `iddisability_category` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`iddisability_category`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `disability_category`
@@ -87,12 +106,15 @@ INSERT INTO `disability_category` (`iddisability_category`, `category_name`) VAL
 -- Table structure for table `disability_has_level`
 --
 
-DROP TABLE IF EXISTS `disability_has_level`;
 CREATE TABLE IF NOT EXISTS `disability_has_level` (
   `iddisability` int(11) NOT NULL,
   `idlevel` int(11) NOT NULL,
-  `iddisability_has_level` int(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='This table matches each disability with the its corresponding levels. Visual impairment for example, will have two entries in this table, one matched with ''low'' and another matched with ''total''';
+  `iddisability_has_level` int(4) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`iddisability_has_level`),
+  KEY `fk_disability_has_level_disability1_idx` (`iddisability`),
+  KEY `fk_disability_has_level_level1_idx` (`idlevel`),
+  KEY `fk_lwd_has_disability_disability_has_level1` (`idlevel`,`iddisability`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='This table matches each disability with the its corresponding levels. Visual impairment for example, will have two entries in this table, one matched with ''low'' and another matched with ''total''' AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `disability_has_level`
@@ -101,7 +123,9 @@ CREATE TABLE IF NOT EXISTS `disability_has_level` (
 INSERT INTO `disability_has_level` (`iddisability`, `idlevel`, `iddisability_has_level`) VALUES
 (2, 1, 5),
 (2, 4, 6),
+(6, 5, 11),
 (6, 6, 7),
+(6, 7, 12),
 (6, 8, 8),
 (1, 9, 9),
 (1, 10, 10);
@@ -112,10 +136,12 @@ INSERT INTO `disability_has_level` (`iddisability`, `idlevel`, `iddisability_has
 -- Table structure for table `disability_has_need`
 --
 
-DROP TABLE IF EXISTS `disability_has_need`;
 CREATE TABLE IF NOT EXISTS `disability_has_need` (
   `idneed` int(11) NOT NULL,
-  `iddisability` int(11) NOT NULL
+  `iddisability` int(11) NOT NULL,
+  PRIMARY KEY (`idneed`,`iddisability`),
+  KEY `fk_need_has_disability_disability1_idx` (`iddisability`),
+  KEY `fk_need_has_disability_need1_idx` (`idneed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -132,9 +158,21 @@ INSERT INTO `disability_has_need` (`idneed`, `iddisability`) VALUES
 (15, 1),
 (16, 1),
 (24, 1),
+(35, 1),
+(36, 1),
+(37, 1),
+(42, 1),
+(47, 1),
+(55, 1),
+(56, 1),
+(57, 1),
 (5, 2),
 (8, 2),
+(26, 5),
+(33, 5),
 (31, 7),
+(30, 9),
+(35, 9),
 (17, 10),
 (18, 10),
 (19, 10),
@@ -142,10 +180,18 @@ INSERT INTO `disability_has_need` (`idneed`, `iddisability`) VALUES
 (21, 10),
 (22, 10),
 (23, 10),
+(35, 10),
+(54, 10),
 (17, 11),
 (18, 11),
 (19, 11),
-(22, 11);
+(20, 11),
+(21, 11),
+(22, 11),
+(23, 11),
+(30, 11),
+(35, 11),
+(54, 11);
 
 -- --------------------------------------------------------
 
@@ -153,9 +199,9 @@ INSERT INTO `disability_has_need` (`idneed`, `iddisability`) VALUES
 -- Table structure for table `disability_needs`
 --
 
-DROP TABLE IF EXISTS `disability_needs`;
 CREATE TABLE IF NOT EXISTS `disability_needs` (
-  `iddisability_needs` int(11) NOT NULL
+  `iddisability_needs` int(11) NOT NULL,
+  PRIMARY KEY (`iddisability_needs`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -164,11 +210,11 @@ CREATE TABLE IF NOT EXISTS `disability_needs` (
 -- Table structure for table `district`
 --
 
-DROP TABLE IF EXISTS `district`;
 CREATE TABLE IF NOT EXISTS `district` (
-  `iddistrict` int(11) NOT NULL,
-  `district_name` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+  `iddistrict` int(11) NOT NULL AUTO_INCREMENT,
+  `district_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`iddistrict`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
 
 --
 -- Dumping data for table `district`
@@ -216,9 +262,8 @@ INSERT INTO `district` (`iddistrict`, `district_name`) VALUES
 -- Table structure for table `fos_user`
 --
 
-DROP TABLE IF EXISTS `fos_user`;
 CREATE TABLE IF NOT EXISTS `fos_user` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username_canonical` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -240,21 +285,18 @@ CREATE TABLE IF NOT EXISTS `fos_user` (
   `ulast_name` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `access_level` set('1','2','3','4') COLLATE utf8_unicode_ci NOT NULL,
   `access_domain` int(7) NOT NULL,
-  `allowed_actions` set('1','2') COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `allowed_actions` set('1','2') COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_957A647992FC23A8` (`username_canonical`),
+  UNIQUE KEY `UNIQ_957A6479A0D96FBF` (`email_canonical`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `fos_user`
 --
 
 INSERT INTO `fos_user` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`, `is_active`, `ufirst_name`, `ulast_name`, `access_level`, `access_domain`, `allowed_actions`) VALUES
-(1, 'kgmunthali', 'kgmunthali', 'kmunthali@gmail.com', 'kmunthali@gmail.com', 1, 's7sq6sczcn448kowk440o4484okoc4o', '$2y$13$s7sq6sczcn448kowk440oucc.Q.Rk11wtFoQG6tUBQ4XmRMXH1Jbe', '2016-02-05 11:49:41', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 0, NULL, 1, '', '', '', 0, ''),
-(2, 'rkaufa', 'rkaufa', 'rkaufa@test.com', 'rkaufa@test.com', 1, '7uny0lbg5e8s84ww44g8kw88ok40wk4', '$2y$13$7uny0lbg5e8s84ww44g8kuUH3UAdf.l5w1lh6wjcc75JijR31v3P.', '2016-02-05 12:02:47', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'ruth', 'kaufa', '3', 15, '2'),
-(3, 'mphiri', 'mphiri', 'mphiri@test.com', 'mphiri@test.com', 1, 'ngxi6wajzfkg8owkgc08kkcgso0cgks', '$2y$13$ngxi6wajzfkg8owkgc08keM41LYOrx2hz6gRePDM5tVLhT4mqJhp2', '2016-02-05 09:19:53', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'malonje', 'phiri', '3', 14, '2'),
-(4, 'cmwale', 'cmwale', 'cmwale@test.com', 'cmwale@test.com', 1, 'igborg2cbjwckkc040cs404w8socswo', '$2y$13$igborg2cbjwckkc040cs4uJhzNyUXnmgVTRjOBwiW8Ce7fVedmr0m', '2016-02-05 09:18:17', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'chikondi', 'mwale', '3', 14, '2'),
-(5, 'anampota', 'anampota', 'anampota@test.com', 'anampota@test.com', 1, 'd3v700979w8cwowkwg0kks44og0s4gc', '$2y$13$d3v700979w8cwowkwg0kke5N.4BrIHoQMhvkjKwDz35vydpPjz4y6', '2016-02-05 12:25:19', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'atupele', 'nampota', '3', 13, '2'),
-(6, 'msichinga', 'msichinga', 'msichinga@test.com', 'msichinga@test.com', 1, 'rv63wq5zbcgoo84w8ccsc0448w8wos4', '$2y$13$rv63wq5zbcgoo84w8ccscuLWZUVlJYk65FhXSIYsxaf98mD31KXby', '2016-02-05 09:26:33', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'mwendanayo', 'sichinga', '3', 15, '2'),
-(7, 'mmulungu', 'mmulungu', 'mmulungu@test.com', 'mmulungu@test.com', 1, '6nvj5e8g7zks000kggsco0o0sc0kogs', '$2y$13$6nvj5e8g7zks000kggscou6L8T07HucNt/shpPaYWt1DCtGCO4cxu', '2016-02-05 12:10:37', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:0:"";}', 0, NULL, 1, 'msenga', 'mulungu', '3', 17, '2');
+(11, 'admin', 'admin', 'admin@ied.com', 'admin@ied.com', 1, '1hb2q5ur69xc48c4o004kkkgwss0kg4', '$2y$13$1hb2q5ur69xc48c4o004keOrLLZG7v6TKmG/ZHcEfk50ZyXqlQHUC', '2016-02-22 13:22:24', 0, 0, NULL, NULL, NULL, 'a:1:{i:0;s:16:"ROLE_SUPER_ADMIN";}', 0, NULL, 1, 'admin', 'admin', '4', 0, '2');
 
 -- --------------------------------------------------------
 
@@ -262,38 +304,23 @@ INSERT INTO `fos_user` (`id`, `username`, `username_canonical`, `email`, `email_
 -- Table structure for table `guardian`
 --
 
-DROP TABLE IF EXISTS `guardian`;
 CREATE TABLE IF NOT EXISTS `guardian` (
-  `idguardian` int(11) NOT NULL,
+  `idguardian` int(11) NOT NULL AUTO_INCREMENT,
   `gfirst_name` varchar(50) NOT NULL,
   `glast_name` varchar(25) NOT NULL,
   `gsex` enum('M','F') NOT NULL,
   `gaddress` varchar(100) NOT NULL,
   `occupation` varchar(20) DEFAULT NULL,
   `district` varchar(11) NOT NULL,
-  `household_type` enum('male-headed','female-headed','child-headed') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='Collects information about the learner''s guardian(s) and the support they are able to provide to the learner, and their income. We still need to come up with a good indicator ';
+  `household_type` enum('male-headed','female-headed','child-headed') DEFAULT NULL,
+  PRIMARY KEY (`idguardian`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Collects information about the learner''s guardian(s) and the support they are able to provide to the learner, and their income. We still need to come up with a good indicator ' AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `guardian`
 --
 
 INSERT INTO `guardian` (`idguardian`, `gfirst_name`, `glast_name`, `gsex`, `gaddress`, `occupation`, `district`, `household_type`) VALUES
-(1, 'Norma', 'Medina', 'F', '284 Coleman Parkway', 'VP Marketing', 'dowa', NULL),
-(2, 'Jonathan', 'Reynolds', 'M', '84502 Melody Crossing', 'Technical Writer', 'lilongwe', NULL),
-(3, 'Judith', 'Medina', 'M', '3 Scott Junction 45', 'Research Assistant I', 'kasungu', NULL),
-(4, 'Martha', 'Freeman', 'M', '500 Orin Parkway', 'Human Resources Assi', 'lilongwe', NULL),
-(5, 'Jeffreys', 'Nichols', 'F', '444 Di Loreto Street', 'Computer Systems Ana', 'kasungu', NULL),
-(6, 'Dorisg', 'Gomez', 'M', '9 Welch Road', 'Computer Systems Ana', 'dowa', NULL),
-(7, 'Ernest', 'Carr', 'M', '68345 Harbort Avenue', 'Physical Therapy Ass', 'dowa', NULL),
-(8, 'Sharon', 'Morgan', 'M', '91 Hoard Terrace', 'General Manager', 'lilongwe', NULL),
-(9, 'Janet', 'Robertson', 'F', '3915 Lyons Drive', 'Technical Writer', 'dowa', NULL),
-(10, 'Debra', 'Harvey', 'M', '02 Coleman Drive', 'Legal Assistant', 'dowa', NULL),
-(11, 'Mada', 'Mkutu', 'F', 'T/A Tsache', 'None', 'Lilongwe', NULL),
-(12, 'Frank', 'Kilembe', 'M', 'T/A tsache', 'FArmer', 'Lilongwe', NULL),
-(13, 'Dona', 'Din', 'F', 'TA Kal', 'School', 'Lilongwe', NULL),
-(14, 'rg', 'sfg', 'M', 'dsfds', 'sdg', 'dfs', NULL),
-(15, 'John B. K.', 'Nsapato', 'M', 'Mang''anja Farmers, Box 2354, Lilongwe', 'Farmer', 'Lilongwe', NULL),
 (16, 'Brian', 'Sitima', 'M', 'c/o kalambo school', 'Business', 'Lilongwe', NULL),
 (17, 'Grace', 'Zimba', 'F', 'Box 20044,Kawale', 'Business', 'Lilongwe', NULL),
 (18, 'Olipa', 'Sandulizeni', 'M', 'Box 109, Salima', 'subsistence farmer.', 'Salima', NULL),
@@ -301,12 +328,12 @@ INSERT INTO `guardian` (`idguardian`, `gfirst_name`, `glast_name`, `gsex`, `gadd
 (20, 'Biswick', 'Mwale', 'M', 'Damalekani Village,\r\nT/A Simphasi\r\nC/O Box 224, Magawa', 'Peasant Farmer', 'Mchinji', NULL),
 (21, 'MAVUTO', 'DOWASI', 'M', 'c/o P/B A88, LILONGWE', 'FARMING', 'LILONGWE', NULL),
 (22, 'Misozi', 'Kapolo', 'F', 'LIhako\r\nP.O. Box 89\r\nLilongwe', 'Ground Hostess', 'Dedza', NULL),
-(23, 'James', 'Mwale', 'M', 'Box 121', 'farming', 'Salima', NULL),
+(23, 'James', 'Mwale', 'M', 'Box 121', 'farming', 'Salima', 'male-headed'),
 (24, 'Mary', 'Liyama', 'F', 'Box 2, Likuni, Lilongwe', 'Piece work', 'LILONGWE', NULL),
 (25, 'Samson', 'Nyoni', 'M', 'P.O Box 1559,Lilongwe', 'Business', 'Lilongwe', NULL),
 (26, 'Sestino', 'Banda', 'M', 'Masautsi Village\r\nT/A Zulu\r\nMchinji', 'Farmer', 'Mchinji', NULL),
 (27, 'Nedson', 'Mkandawire', 'M', 'C/O Box 140,Mkanda', 'Farmer', 'Mchinji', NULL),
-(28, 'Maxwell', 'Ngambi', 'M', 'Ibanda\r\nP.O Box 25\r\nChitipa', 'Witch Doctor', 'Chitipa', NULL),
+(28, 'Maxwell', 'Ngambi', 'M', 'Ibanda\r\nP.O Box 25\r\nChitipa', 'Witch Doctor', 'Chitipa', 'male-headed'),
 (29, 'Luki', 'Namwila', 'F', 'None', 'Farmer', 'Chitipa', NULL);
 
 -- --------------------------------------------------------
@@ -315,11 +342,11 @@ INSERT INTO `guardian` (`idguardian`, `gfirst_name`, `glast_name`, `gsex`, `gadd
 -- Table structure for table `level`
 --
 
-DROP TABLE IF EXISTS `level`;
 CREATE TABLE IF NOT EXISTS `level` (
-  `idlevel` int(11) NOT NULL,
-  `level_name` varchar(12) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='This table will contain all the different levels disabilities could have e.g. low, high, moderate, severe, total, partial';
+  `idlevel` int(11) NOT NULL AUTO_INCREMENT,
+  `level_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`idlevel`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='This table will contain all the different levels disabilities could have e.g. low, high, moderate, severe, total, partial' AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `level`
@@ -327,13 +354,13 @@ CREATE TABLE IF NOT EXISTS `level` (
 
 INSERT INTO `level` (`idlevel`, `level_name`) VALUES
 (1, 'partial'),
-(4, 'Profound'),
-(5, 'Partial blin'),
-(6, 'Partial blin'),
-(7, 'Total blind '),
-(8, 'Total blind '),
-(9, 'Low vision'),
-(10, 'Blindness');
+(4, 'profound'),
+(5, 'partial blind & partial deaf'),
+(6, 'partial blind & profound deaf'),
+(7, 'total blind & partial deaf'),
+(8, 'total blind & profound deaf'),
+(9, 'low vision'),
+(10, 'blindness');
 
 -- --------------------------------------------------------
 
@@ -341,7 +368,6 @@ INSERT INTO `level` (`idlevel`, `level_name`) VALUES
 -- Table structure for table `lwd`
 --
 
-DROP TABLE IF EXISTS `lwd`;
 CREATE TABLE IF NOT EXISTS `lwd` (
   `idlwd` bigint(20) NOT NULL,
   `first_name` varchar(50) NOT NULL,
@@ -352,28 +378,10 @@ CREATE TABLE IF NOT EXISTS `lwd` (
   `idguardian` int(11) NOT NULL,
   `guardian_relationship` enum('parent','sibling','grandparent','uncle/aunt','other relative','other non-relative') NOT NULL,
   `non_relative` varchar(25) DEFAULT NULL,
-  `status_of_parent` enum('living','deceased') DEFAULT NULL
+  `status_of_parent` enum('living','deceased','unknown') DEFAULT NULL,
+  PRIMARY KEY (`idlwd`),
+  KEY `fk_lwd_guardian1_idx` (`idguardian`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Represents the Learner with Disability (LWD), who is the main Entity for this Database';
-
---
--- Dumping data for table `lwd`
---
-
-INSERT INTO `lwd` (`idlwd`, `first_name`, `last_name`, `home_address`, `sex`, `dob`, `idguardian`, `guardian_relationship`, `non_relative`, `status_of_parent`) VALUES
-(144450002001, 'DOWASI', 'ROBERT', 'KAMTOTOLE Vge, T/A. NJEWA', 'M', '2004-10-10', 21, 'parent', NULL, 'living'),
-(1234556894321456, 'Tubanje', 'Katenga', 'Lufita School\r\nP.O Box 13\r\nChitipa', 'F', '2016-02-05', 29, 'grandparent', NULL, 'living'),
-(1234567891011121, 'Martha', 'Kapolo', 'Chembe Vge\r\nLihako\r\nP.O Box 89\r\nLilongwe', 'F', '2007-03-13', 22, 'parent', NULL, 'living'),
-(2001400060227750, 'MADALITSO', 'LIYAMA', 'Box 2 Likuni, Lilongwe', 'M', '2000-02-03', 24, 'parent', NULL, 'living'),
-(2001617250186782, 'Willy', 'Banda', 'Box 121, Salima', 'M', '2010-02-01', 23, 'uncle/aunt', NULL, 'deceased'),
-(2009145229001317, 'Mphatso', 'Essau', 'Kumodzi\r\nT/A MDUWA\r\nP/A Mikundi-Magawa-Mchinji', 'M', '2004-04-22', 19, 'parent', NULL, 'living'),
-(2009542624150061, 'Chikumbutso', 'Sandulizeni', 'Box 109, Salima', 'M', '1999-06-21', 18, 'uncle/aunt', NULL, 'deceased'),
-(2010155042270185, 'Rasul', 'Zimba', 'Box 20044, Kawale', 'M', '2006-01-04', 17, 'parent', NULL, 'living'),
-(2012145042700014, 'Mayeso', 'Nedson', 'Kalikha\r\nT/A Mkanda\r\nBox 140,Mkanda, Mchinji', 'M', '2011-05-30', 27, 'parent', NULL, 'living'),
-(2014145042830067, 'Chikondi', 'Biswick', 'Damalekani Village,\r\nT/A Simphasi\r\nC/O Box 224, Magawa', 'M', '2006-06-15', 20, 'parent', NULL, 'living'),
-(2015155004480179, 'Vincent', 'Nyoni', 'Bwemba,T/A Malili,P.O Box 1559,Lilongwe', 'M', '2008-09-01', 25, 'parent', NULL, 'living'),
-(2222145645675434, 'Kabifya', 'Ngambi', 'Kanengo', 'M', '2016-03-01', 28, 'parent', NULL, 'deceased'),
-(2345987634568765, 'Papias', 'Sitima', 'Sector 4', 'M', '2005-05-11', 16, 'parent', NULL, 'living'),
-(6542889899900854757, 'James', 'Sestuno', 'Masautsi Village\r\nT/A Zulu\r\nMchinji', 'M', '2016-02-05', 26, 'parent', NULL, 'living');
 
 -- --------------------------------------------------------
 
@@ -381,37 +389,18 @@ INSERT INTO `lwd` (`idlwd`, `first_name`, `last_name`, `home_address`, `sex`, `d
 -- Table structure for table `lwd_belongs_to_school`
 --
 
-DROP TABLE IF EXISTS `lwd_belongs_to_school`;
 CREATE TABLE IF NOT EXISTS `lwd_belongs_to_school` (
   `idlwd` bigint(20) NOT NULL,
   `emiscode` int(11) NOT NULL,
   `year` year(4) NOT NULL,
   `std` tinyint(1) NOT NULL,
-  `distance_to_school` enum('<5','1-5','>5') NOT NULL,
+  `distance_to_school` enum('<1','1-5','>5') NOT NULL,
   `means_to_school` enum('bus','carried','walking','bicycle','tricycle','wheel chair','other') NOT NULL,
-  `other_means` varchar(25) DEFAULT NULL
+  `other_means` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`idlwd`,`emiscode`,`year`),
+  KEY `fk_lwd_has_school_lwd1_idx` (`idlwd`),
+  KEY `fk_lwd_has_school_school1_idx` (`emiscode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table was created to cater for the case where a learner transferred from one school to another. Therefore, it keeps track of the year in which a learner belongs/belonged to a particular school';
-
---
--- Dumping data for table `lwd_belongs_to_school`
---
-
-INSERT INTO `lwd_belongs_to_school` (`idlwd`, `emiscode`, `year`, `std`, `distance_to_school`, `means_to_school`, `other_means`) VALUES
-(144450002001, 502792, 2016, 3, '<5', 'walking', NULL),
-(1234556894321456, 500442, 2016, 7, '<5', 'wheel chair', NULL),
-(1234567891011121, 500442, 2016, 1, '1-5', 'bicycle', NULL),
-(2001400060227750, 502792, 2016, 8, '<5', 'walking', NULL),
-(2001617250186782, 502624, 2016, 5, '1-5', 'walking', NULL),
-(2009145229001317, 504294, 2016, 6, '<5', 'walking', NULL),
-(2009542624150061, 502624, 2016, 8, '1-5', 'wheel chair', NULL),
-(2010155042270185, 504227, 2016, 4, '<5', 'wheel chair', NULL),
-(2012145042700014, 504294, 2016, 1, '<5', 'walking', NULL),
-(2014145042830067, 500885, 2016, 3, '1-5', 'walking', NULL),
-(2014145042830067, 504283, 2016, 3, '<5', 'walking', NULL),
-(2015155004480179, 504227, 2016, 1, '<5', 'walking', NULL),
-(2222145645675434, 500442, 2016, 5, '<5', 'walking', NULL),
-(2345987634568765, 504923, 2016, 1, '1-5', 'bus', NULL),
-(6542889899900854757, 504300, 2016, 5, '<5', 'walking', NULL);
 
 -- --------------------------------------------------------
 
@@ -419,44 +408,15 @@ INSERT INTO `lwd_belongs_to_school` (`idlwd`, `emiscode`, `year`, `std`, `distan
 -- Table structure for table `lwd_has_disability`
 --
 
-DROP TABLE IF EXISTS `lwd_has_disability`;
 CREATE TABLE IF NOT EXISTS `lwd_has_disability` (
   `idlwd` bigint(20) NOT NULL,
   `iddisability` int(11) NOT NULL,
-  `idlevel` int(11) DEFAULT NULL
+  `idlevel` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idlwd`,`iddisability`),
+  KEY `fk_lwd_has_disability_disability1_idx` (`iddisability`),
+  KEY `fk_lwd_has_disability_lwd1_idx` (`idlwd`),
+  KEY `fk_lwd_has_disability_disability_has_level1_idx` (`idlevel`,`iddisability`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `lwd_has_disability`
---
-
-INSERT INTO `lwd_has_disability` (`idlwd`, `iddisability`, `idlevel`) VALUES
-(2014145042830067, 3, NULL),
-(1234567891011121, 4, NULL),
-(2009145229001317, 4, NULL),
-(1234567891011121, 5, NULL),
-(2010155042270185, 5, NULL),
-(6542889899900854757, 7, NULL),
-(144450002001, 9, NULL),
-(1234567891011121, 9, NULL),
-(2001617250186782, 9, NULL),
-(1234556894321456, 10, NULL),
-(2010155042270185, 10, NULL),
-(2009542624150061, 11, NULL),
-(2012145042700014, 11, NULL),
-(144450002001, 2, 1),
-(1234567891011121, 2, 1),
-(2009145229001317, 2, 1),
-(2009542624150061, 2, 1),
-(2015155004480179, 2, 1),
-(2345987634568765, 2, 4),
-(6542889899900854757, 2, 4),
-(2222145645675434, 6, 6),
-(2012145042700014, 6, 8),
-(2001400060227750, 1, 9),
-(2015155004480179, 1, 9),
-(6542889899900854757, 1, 9),
-(2345987634568765, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -464,36 +424,14 @@ INSERT INTO `lwd_has_disability` (`idlwd`, `iddisability`, `idlevel`) VALUES
 -- Table structure for table `lwd_has_disability_has_need`
 --
 
-DROP TABLE IF EXISTS `lwd_has_disability_has_need`;
 CREATE TABLE IF NOT EXISTS `lwd_has_disability_has_need` (
   `idlwd` bigint(20) NOT NULL,
   `iddisability` int(11) NOT NULL,
-  `idneed` int(11) NOT NULL
+  `idneed` int(11) NOT NULL,
+  PRIMARY KEY (`idlwd`,`iddisability`,`idneed`),
+  KEY `fk_lwd_has_disability_has_need_need1_idx` (`idneed`),
+  KEY `fk_lwd_has_disability_has_need_lwd_has_disability1_idx` (`idlwd`,`iddisability`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `lwd_has_disability_has_need`
---
-
-INSERT INTO `lwd_has_disability_has_need` (`idlwd`, `iddisability`, `idneed`) VALUES
-(144450002001, 2, 5),
-(2009145229001317, 2, 5),
-(2009542624150061, 2, 5),
-(2015155004480179, 2, 5),
-(6542889899900854757, 2, 5),
-(144450002001, 2, 8),
-(2009542624150061, 2, 8),
-(2001400060227750, 1, 10),
-(2015155004480179, 1, 10),
-(2345987634568765, 1, 10),
-(2001400060227750, 1, 11),
-(2345987634568765, 1, 11),
-(2345987634568765, 1, 12),
-(2345987634568765, 1, 13),
-(2009542624150061, 11, 19),
-(2010155042270185, 10, 19),
-(2012145042700014, 11, 19),
-(6542889899900854757, 7, 31);
 
 -- --------------------------------------------------------
 
@@ -501,13 +439,14 @@ INSERT INTO `lwd_has_disability_has_need` (`idlwd`, `iddisability`, `idneed`) VA
 -- Table structure for table `need`
 --
 
-DROP TABLE IF EXISTS `need`;
 CREATE TABLE IF NOT EXISTS `need` (
-  `idneed` int(11) NOT NULL,
+  `idneed` int(11) NOT NULL AUTO_INCREMENT,
   `needname` varchar(45) NOT NULL,
   `need_type` enum('learner only','school only','both') NOT NULL COMMENT 'This attribute defines the type of need i.e. learning need, mobility need, facility need',
-  `quantifiable` enum('yes','no') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 COMMENT='This table includes needs (specific to a disability)  as well as facilities ( Specific to a school).\n';
+  `quantifiable` enum('yes','no') DEFAULT NULL,
+  PRIMARY KEY (`idneed`),
+  UNIQUE KEY `needname_UNIQUE` (`needname`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='This table includes needs (specific to a disability)  as well as facilities ( Specific to a school).\n' AUTO_INCREMENT=58 ;
 
 --
 -- Dumping data for table `need`
@@ -516,9 +455,9 @@ CREATE TABLE IF NOT EXISTS `need` (
 INSERT INTO `need` (`idneed`, `needname`, `need_type`, `quantifiable`) VALUES
 (1, 'audiology mirrors', 'school only', NULL),
 (3, 'speech therapists', 'learner only', NULL),
-(4, 'dressing tables', 'learner only', NULL),
-(5, 'hearing aids', 'learner only', NULL),
-(6, 'gloves', 'learner only', NULL),
+(4, 'dressing tables', 'school only', NULL),
+(5, 'hearing aids', 'both', NULL),
+(6, 'gloves', 'school only', NULL),
 (7, 'salt', 'learner only', NULL),
 (8, 'sign language alphabets', 'both', NULL),
 (9, 'screening', 'school only', NULL),
@@ -532,7 +471,7 @@ INSERT INTO `need` (`idneed`, `needname`, `need_type`, `quantifiable`) VALUES
 (17, 'ramps', 'school only', NULL),
 (18, 'adaptive chairs and tables', 'school only', NULL),
 (19, 'wheelchair', 'both', NULL),
-(20, 'caliper', 'both', NULL),
+(20, 'calipers', 'both', NULL),
 (21, 'crutches', 'both', NULL),
 (22, 'standing frames', 'both', NULL),
 (23, 'seat boasters', 'school only', NULL),
@@ -541,13 +480,32 @@ INSERT INTO `need` (`idneed`, `needname`, `need_type`, `quantifiable`) VALUES
 (27, 'computers', 'learner only', NULL),
 (29, 'feading pens', 'school only', NULL),
 (30, 'gripping pens and pencils', 'both', NULL),
-(31, 'toys', 'both', 'no'),
+(31, 'toys', 'school only', 'no'),
 (32, 'reading boards', 'both', 'yes'),
 (33, 'special sunscreen lotion', 'both', 'no'),
 (34, 'protective wear', 'both', 'no'),
 (35, 'felt pens', 'learner only', NULL),
 (36, 'styli', 'both', 'yes'),
-(37, 'talking books', 'learner only', 'yes');
+(37, 'talking books', 'learner only', 'yes'),
+(38, 'sign language communicator', 'school only', 'no'),
+(39, 'pyramids', 'school only', 'no'),
+(41, 'tonners', 'school only', 'no'),
+(42, 'abacus', 'school only', 'yes'),
+(43, 'reading pens', 'school only', 'yes'),
+(44, 'type writers', 'school only', 'yes'),
+(45, 'slate', 'school only', 'yes'),
+(46, 'shakers', 'school only', 'yes'),
+(47, 'talking calculators', 'learner only', NULL),
+(48, 'recorders', 'both', 'yes'),
+(49, 'computer braille papers', 'school only', 'yes'),
+(50, 'computers with assistive software', 'school only', 'yes'),
+(51, 'flip charts', 'school only', 'yes'),
+(52, 'victor readers', 'school only', 'yes'),
+(53, 'reading stands', 'school only', 'yes'),
+(54, 'hand splint', 'learner only', NULL),
+(55, 'taylor frame', 'learner only', NULL),
+(56, 'hand frame', 'both', 'yes'),
+(57, 'raised diagrams', 'learner only', NULL);
 
 -- --------------------------------------------------------
 
@@ -555,7 +513,6 @@ INSERT INTO `need` (`idneed`, `needname`, `need_type`, `quantifiable`) VALUES
 -- Table structure for table `performance`
 --
 
-DROP TABLE IF EXISTS `performance`;
 CREATE TABLE IF NOT EXISTS `performance` (
   `std` tinyint(4) NOT NULL,
   `year` year(4) NOT NULL,
@@ -565,8 +522,12 @@ CREATE TABLE IF NOT EXISTS `performance` (
   `idlwd` bigint(20) NOT NULL,
   `emiscode` int(11) NOT NULL,
   `teachercomment` varchar(45) DEFAULT NULL,
-  `rec_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table will track the learner''s performance through  primary school. performance is recorded for each school, year, std and term';
+  `rec_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`std`,`year`,`term`,`idlwd`,`emiscode`),
+  UNIQUE KEY `rec_id_UNIQUE` (`rec_id`),
+  KEY `fk_performance_lwd1_idx` (`idlwd`),
+  KEY `fk_performance_school1_idx` (`emiscode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table will track the learner''s performance through  primary school. performance is recorded for each school, year, std and term' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -574,7 +535,6 @@ CREATE TABLE IF NOT EXISTS `performance` (
 -- Table structure for table `room_state`
 --
 
-DROP TABLE IF EXISTS `room_state`;
 CREATE TABLE IF NOT EXISTS `room_state` (
   `room_id` varchar(3) NOT NULL,
   `emiscode` int(11) NOT NULL,
@@ -585,33 +545,10 @@ CREATE TABLE IF NOT EXISTS `room_state` (
   `access` enum('yes','no') NOT NULL,
   `enough_ventilation` enum('yes','no') NOT NULL,
   `room_type` enum('Temporary','Permanent','Open air') NOT NULL DEFAULT 'Permanent',
-  `noise_free` enum('yes','no') NOT NULL
+  `noise_free` enum('yes','no') NOT NULL,
+  PRIMARY KEY (`room_id`,`emiscode`),
+  KEY `fk_facility_state_school1_idx` (`emiscode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table describes the state of each facility (classrooms or resource center) at a school each year';
-
---
--- Dumping data for table `room_state`
---
-
-INSERT INTO `room_state` (`room_id`, `emiscode`, `year`, `enough_light`, `enough_space`, `adaptive_chairs`, `access`, `enough_ventilation`, `room_type`, `noise_free`) VALUES
-('1', 504300, 2016, 'no', 'no', 'no', 'yes', 'no', 'Permanent', 'yes'),
-('1A', 502624, 2016, 'yes', 'yes', 'no', 'yes', 'yes', 'Permanent', 'no'),
-('1A', 504294, 2016, 'yes', 'yes', 'no', 'yes', 'yes', 'Permanent', 'yes'),
-('1B', 502624, 2016, 'no', 'yes', 'no', 'yes', 'yes', 'Permanent', 'yes'),
-('1C', 502624, 2016, 'yes', 'no', 'no', 'yes', 'no', 'Permanent', 'no'),
-('1C', 502792, 2016, 'yes', 'no', 'no', 'yes', 'yes', 'Open air', 'yes'),
-('2', 504300, 2016, 'no', 'no', 'no', 'no', 'no', 'Permanent', 'no'),
-('2 A', 504227, 2016, 'no', 'no', 'no', 'no', 'yes', 'Permanent', 'yes'),
-('3 A', 504227, 2016, 'yes', 'yes', 'no', 'no', 'yes', 'Open air', 'no'),
-('4b', 504923, 2016, 'yes', 'no', 'yes', 'no', 'no', 'Permanent', 'no'),
-('5', 504300, 2016, 'yes', 'yes', 'yes', 'yes', 'yes', 'Temporary', 'yes'),
-('5A', 504227, 2016, 'yes', 'yes', 'yes', 'yes', 'yes', 'Permanent', 'yes'),
-('7A', 502792, 2016, 'yes', 'yes', 'no', 'no', 'yes', 'Permanent', 'yes'),
-('7B', 504227, 2016, 'yes', 'yes', 'yes', 'yes', 'yes', 'Permanent', 'yes'),
-('LB', 500442, 2016, 'no', 'no', 'yes', 'no', 'no', 'Permanent', 'no'),
-('RR1', 500442, 2016, 'no', 'no', 'yes', 'no', 'no', 'Temporary', 'no'),
-('TL', 504227, 2016, 'no', 'no', 'no', 'no', 'no', 'Permanent', 'no'),
-('TL1', 500442, 2016, 'no', 'no', 'no', 'no', 'no', 'Permanent', 'no'),
-('TL2', 500442, 2016, 'no', 'no', 'no', 'no', 'no', 'Permanent', 'no');
 
 -- --------------------------------------------------------
 
@@ -619,13 +556,15 @@ INSERT INTO `room_state` (`room_id`, `emiscode`, `year`, `enough_light`, `enough
 -- Table structure for table `school`
 --
 
-DROP TABLE IF EXISTS `school`;
 CREATE TABLE IF NOT EXISTS `school` (
   `emiscode` int(11) NOT NULL,
   `idzone` int(11) NOT NULL,
   `school_name` varchar(50) NOT NULL,
   `address` varchar(250) NOT NULL,
-  `iddistrict` int(11) NOT NULL
+  `iddistrict` int(11) NOT NULL,
+  PRIMARY KEY (`emiscode`),
+  KEY `fk_school_zone1_idx` (`idzone`),
+  KEY `fk_school_district1_idx` (`iddistrict`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6467,26 +6406,17 @@ INSERT INTO `school` (`emiscode`, `idzone`, `school_name`, `address`, `iddistric
 -- Table structure for table `school_exit`
 --
 
-DROP TABLE IF EXISTS `school_exit`;
 CREATE TABLE IF NOT EXISTS `school_exit` (
   `reason` set('completed','sickness','death','pregnancy','distance','poor resources','poor environment','other') NOT NULL,
   `other_reason` varchar(20) DEFAULT NULL COMMENT 'This column is required if person chose ''other'' from reason.',
   `emiscode` int(11) NOT NULL,
   `idlwd` bigint(20) NOT NULL,
   `year` year(4) NOT NULL,
-  `date_of_exit` date DEFAULT NULL
+  `date_of_exit` date DEFAULT NULL,
+  PRIMARY KEY (`emiscode`,`idlwd`,`year`),
+  KEY `fk_dropout_school1_idx` (`emiscode`),
+  KEY `fk_dropout_lwd1_idx` (`idlwd`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `school_exit`
---
-
-INSERT INTO `school_exit` (`reason`, `other_reason`, `emiscode`, `idlwd`, `year`, `date_of_exit`) VALUES
-('sickness', NULL, 502624, 2009542624150061, 2016, NULL),
-('sickness', NULL, 504227, 2010155042270185, 2016, NULL),
-('completed', NULL, 504227, 2015155004480179, 2016, NULL),
-('distance', NULL, 504294, 2012145042700014, 2016, NULL),
-('pregnancy', NULL, 504300, 6542889899900854757, 2016, NULL);
 
 -- --------------------------------------------------------
 
@@ -6494,7 +6424,6 @@ INSERT INTO `school_exit` (`reason`, `other_reason`, `emiscode`, `idlwd`, `year`
 -- Table structure for table `school_has_need`
 --
 
-DROP TABLE IF EXISTS `school_has_need`;
 CREATE TABLE IF NOT EXISTS `school_has_need` (
   `emiscode` int(11) NOT NULL,
   `idneed` int(11) NOT NULL,
@@ -6503,30 +6432,11 @@ CREATE TABLE IF NOT EXISTS `school_has_need` (
   `quantity_in_use` int(11) DEFAULT NULL,
   `quantity_required` int(11) DEFAULT NULL,
   `available` enum('yes','no') DEFAULT NULL,
-  `provided_by` varchar(100) DEFAULT NULL
+  `provided_by` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`emiscode`,`idneed`),
+  KEY `fk_school_has_need_need1_idx` (`idneed`),
+  KEY `fk_school_has_need_school1_idx` (`emiscode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='This table will identify which of the disability needs is being met by a particular school';
-
---
--- Dumping data for table `school_has_need`
---
-
-INSERT INTO `school_has_need` (`emiscode`, `idneed`, `year_recorded`, `quantity_available`, `quantity_in_use`, `quantity_required`, `available`, `provided_by`) VALUES
-(500442, 3, 2016, 1, 1, 1, NULL, 'FEDOMA'),
-(500442, 8, 2016, 1, 1, 1, NULL, 'FEDOMA'),
-(500442, 12, 2016, 1, 1, 1, NULL, 'Sight Savers'),
-(500442, 17, 2016, 4, 4, 4, NULL, 'MACOHA'),
-(500442, 20, 2016, 2, 2, 2, NULL, 'FEDOMA'),
-(502624, 8, 2016, NULL, NULL, NULL, NULL, NULL),
-(502624, 9, 2016, NULL, NULL, NULL, NULL, NULL),
-(502624, 13, 2016, NULL, NULL, NULL, NULL, 'EGRA'),
-(502624, 19, 2016, 1, 1, 2, NULL, 'FEDOMA'),
-(502792, 19, 2016, 3, 2, 6, NULL, 'World Bank'),
-(504227, 3, 2016, NULL, NULL, NULL, NULL, NULL),
-(504227, 13, 2016, NULL, NULL, NULL, NULL, 'FEDOMA'),
-(504294, 10, 2016, 23, 8, 102, NULL, 'Malawi government, SAVE THE CHILDREN'),
-(504300, 11, 2016, 5, 14, 28, NULL, 'Sight Savers'),
-(504300, 16, 2016, 34, 52, 135, NULL, 'Chikondi Foundation,'),
-(504923, 4, 2016, 4, 2, 2, NULL, 'Itinerant teacher, FEDOMA');
 
 -- --------------------------------------------------------
 
@@ -6534,30 +6444,16 @@ INSERT INTO `school_has_need` (`emiscode`, `idneed`, `year_recorded`, `quantity_
 -- Table structure for table `school_has_snt`
 --
 
-DROP TABLE IF EXISTS `school_has_snt`;
 CREATE TABLE IF NOT EXISTS `school_has_snt` (
   `emiscode` int(11) NOT NULL,
   `idsnt` int(10) unsigned NOT NULL,
   `year` year(4) NOT NULL,
   `snt_type` enum('Itinerant','Stationed') DEFAULT NULL,
-  `no_of_visits` int(3) DEFAULT NULL
+  `no_of_visits` int(3) DEFAULT NULL,
+  PRIMARY KEY (`idsnt`,`emiscode`,`year`),
+  KEY `fk_school_has_snt_snt1_idx` (`idsnt`),
+  KEY `fk_school_has_snt_school1_idx` (`emiscode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `school_has_snt`
---
-
-INSERT INTO `school_has_snt` (`emiscode`, `idsnt`, `year`, `snt_type`, `no_of_visits`) VALUES
-(500885, 1216, 2016, 'Itinerant', 1),
-(500885, 1217, 2016, 'Stationed', NULL),
-(504227, 1218, 2016, 'Itinerant', 12),
-(502624, 1219, 2016, 'Itinerant', 1),
-(504300, 1220, 2016, 'Stationed', NULL),
-(502792, 1221, 2016, 'Itinerant', 12),
-(504923, 1222, 2016, 'Itinerant', 2),
-(500442, 1223, 2016, 'Stationed', NULL),
-(504227, 1224, 2016, 'Itinerant', 9),
-(504741, 1225, 2016, 'Itinerant', 2);
 
 -- --------------------------------------------------------
 
@@ -6565,9 +6461,8 @@ INSERT INTO `school_has_snt` (`emiscode`, `idsnt`, `year`, `snt_type`, `no_of_vi
 -- Table structure for table `snt`
 --
 
-DROP TABLE IF EXISTS `snt`;
 CREATE TABLE IF NOT EXISTS `snt` (
-  `idsnt` int(10) unsigned NOT NULL COMMENT 'Special needs teacher\n',
+  `idsnt` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Special needs teacher\n',
   `sfirst_name` varchar(50) NOT NULL,
   `slast_name` varchar(25) NOT NULL,
   `s_sex` enum('M','F') NOT NULL,
@@ -6576,24 +6471,10 @@ CREATE TABLE IF NOT EXISTS `snt` (
   `year_started` year(4) DEFAULT NULL,
   `employment_number` varchar(20) NOT NULL,
   `teacher_type` enum('snt','regular') NOT NULL,
-  `cpd_training` enum('yes','no') DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1226 DEFAULT CHARSET=utf8 COMMENT='Special Needs Teacher\n';
-
---
--- Dumping data for table `snt`
---
-
-INSERT INTO `snt` (`idsnt`, `sfirst_name`, `slast_name`, `s_sex`, `qualification`, `speciality`, `year_started`, `employment_number`, `teacher_type`, `cpd_training`) VALUES
-(1216, 'Lonely Beatrice', 'Kazembe', 'F', 'diploma', 'LD', 2012, '073213', 'snt', NULL),
-(1217, 'Gabriella', 'Mzanda', 'F', 'degree', 'LD', 2014, '073215', 'snt', NULL),
-(1218, 'Jane', 'Mkandawire', 'F', 'diploma', 'HI', 1999, '079697', 'snt', NULL),
-(1219, 'John', 'Chiphaka', 'M', 'diploma', 'VI', 2001, '023133', 'snt', NULL),
-(1220, 'Patricia', 'Chikwanje', 'F', 'certificate', 'LD', 2012, '068711', 'snt', NULL),
-(1221, 'LESSIE', 'JIMU', 'F', 'diploma', 'VI', 1996, '504238', 'snt', NULL),
-(1222, 'Carolyn', 'Mwale', 'F', 'diploma', 'VI', 2006, '234576', 'snt', NULL),
-(1223, 'Black', 'Simbeye', 'M', 'certificate', 'HI', 2016, '235798', 'snt', NULL),
-(1224, 'Kettie', 'Chamba', 'F', 'diploma', 'VI', 2001, '185456', 'snt', NULL),
-(1225, 'Patricia', 'Chisambo', 'F', 'diploma', 'HI', 1997, '061154', 'snt', NULL);
+  `cpd_training` enum('yes','no') DEFAULT NULL,
+  PRIMARY KEY (`idsnt`),
+  UNIQUE KEY `employment_number_UNIQUE` (`employment_number`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Special Needs Teacher\n' AUTO_INCREMENT=1227 ;
 
 -- --------------------------------------------------------
 
@@ -6601,18 +6482,19 @@ INSERT INTO `snt` (`idsnt`, `sfirst_name`, `slast_name`, `s_sex`, `qualification
 -- Table structure for table `zone`
 --
 
-DROP TABLE IF EXISTS `zone`;
 CREATE TABLE IF NOT EXISTS `zone` (
   `idzone` int(11) NOT NULL,
-  `district_iddistrict` int(11) NOT NULL,
-  `zone_name` varchar(20) DEFAULT NULL
+  `iddistrict` int(11) NOT NULL,
+  `zone_name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`idzone`),
+  KEY `fk_zone_district1_idx` (`iddistrict`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `zone`
 --
 
-INSERT INTO `zone` (`idzone`, `district_iddistrict`, `zone_name`) VALUES
+INSERT INTO `zone` (`idzone`, `iddistrict`, `zone_name`) VALUES
 (1, 21, 'Balaka'),
 (2, 16, 'Balang''ombe'),
 (3, 25, 'Bangwe'),
@@ -7044,196 +6926,6 @@ INSERT INTO `zone` (`idzone`, `district_iddistrict`, `zone_name`) VALUES
 (501, 2, 'Fulirwa');
 
 --
--- Indexes for dumped tables
---
-
---
--- Indexes for table `disability`
---
-ALTER TABLE `disability`
-  ADD PRIMARY KEY (`iddisability`), ADD KEY `fk_disability_disability_category1_idx` (`iddisability_category`);
-
---
--- Indexes for table `disability_category`
---
-ALTER TABLE `disability_category`
-  ADD PRIMARY KEY (`iddisability_category`);
-
---
--- Indexes for table `disability_has_level`
---
-ALTER TABLE `disability_has_level`
-  ADD PRIMARY KEY (`iddisability_has_level`), ADD KEY `fk_disability_has_level_disability1_idx` (`iddisability`), ADD KEY `fk_disability_has_level_level1_idx` (`idlevel`), ADD KEY `fk_lwd_has_disability_disability_has_level1` (`idlevel`,`iddisability`);
-
---
--- Indexes for table `disability_has_need`
---
-ALTER TABLE `disability_has_need`
-  ADD PRIMARY KEY (`idneed`,`iddisability`), ADD KEY `fk_need_has_disability_disability1_idx` (`iddisability`), ADD KEY `fk_need_has_disability_need1_idx` (`idneed`);
-
---
--- Indexes for table `disability_needs`
---
-ALTER TABLE `disability_needs`
-  ADD PRIMARY KEY (`iddisability_needs`);
-
---
--- Indexes for table `district`
---
-ALTER TABLE `district`
-  ADD PRIMARY KEY (`iddistrict`);
-
---
--- Indexes for table `fos_user`
---
-ALTER TABLE `fos_user`
-  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_957A647992FC23A8` (`username_canonical`), ADD UNIQUE KEY `UNIQ_957A6479A0D96FBF` (`email_canonical`);
-
---
--- Indexes for table `guardian`
---
-ALTER TABLE `guardian`
-  ADD PRIMARY KEY (`idguardian`);
-
---
--- Indexes for table `level`
---
-ALTER TABLE `level`
-  ADD PRIMARY KEY (`idlevel`);
-
---
--- Indexes for table `lwd`
---
-ALTER TABLE `lwd`
-  ADD PRIMARY KEY (`idlwd`), ADD KEY `fk_lwd_guardian1_idx` (`idguardian`);
-
---
--- Indexes for table `lwd_belongs_to_school`
---
-ALTER TABLE `lwd_belongs_to_school`
-  ADD PRIMARY KEY (`idlwd`,`emiscode`,`year`), ADD KEY `fk_lwd_has_school_lwd1_idx` (`idlwd`), ADD KEY `fk_lwd_has_school_school1_idx` (`emiscode`);
-
---
--- Indexes for table `lwd_has_disability`
---
-ALTER TABLE `lwd_has_disability`
-  ADD PRIMARY KEY (`idlwd`,`iddisability`), ADD KEY `fk_lwd_has_disability_disability1_idx` (`iddisability`), ADD KEY `fk_lwd_has_disability_lwd1_idx` (`idlwd`), ADD KEY `fk_lwd_has_disability_disability_has_level1_idx` (`idlevel`,`iddisability`);
-
---
--- Indexes for table `lwd_has_disability_has_need`
---
-ALTER TABLE `lwd_has_disability_has_need`
-  ADD PRIMARY KEY (`idlwd`,`iddisability`,`idneed`), ADD KEY `fk_lwd_has_disability_has_need_need1_idx` (`idneed`), ADD KEY `fk_lwd_has_disability_has_need_lwd_has_disability1_idx` (`idlwd`,`iddisability`);
-
---
--- Indexes for table `need`
---
-ALTER TABLE `need`
-  ADD PRIMARY KEY (`idneed`);
-
---
--- Indexes for table `performance`
---
-ALTER TABLE `performance`
-  ADD PRIMARY KEY (`std`,`year`,`term`,`idlwd`,`emiscode`), ADD UNIQUE KEY `rec_id_UNIQUE` (`rec_id`), ADD KEY `fk_performance_lwd1_idx` (`idlwd`), ADD KEY `fk_performance_school1_idx` (`emiscode`);
-
---
--- Indexes for table `room_state`
---
-ALTER TABLE `room_state`
-  ADD PRIMARY KEY (`room_id`,`emiscode`), ADD KEY `fk_facility_state_school1_idx` (`emiscode`);
-
---
--- Indexes for table `school`
---
-ALTER TABLE `school`
-  ADD PRIMARY KEY (`emiscode`), ADD KEY `fk_school_zone1_idx` (`idzone`), ADD KEY `fk_school_district1_idx` (`iddistrict`);
-
---
--- Indexes for table `school_exit`
---
-ALTER TABLE `school_exit`
-  ADD PRIMARY KEY (`emiscode`,`idlwd`,`year`), ADD KEY `fk_dropout_school1_idx` (`emiscode`), ADD KEY `fk_dropout_lwd1_idx` (`idlwd`);
-
---
--- Indexes for table `school_has_need`
---
-ALTER TABLE `school_has_need`
-  ADD PRIMARY KEY (`emiscode`,`idneed`), ADD KEY `fk_school_has_need_need1_idx` (`idneed`), ADD KEY `fk_school_has_need_school1_idx` (`emiscode`);
-
---
--- Indexes for table `school_has_snt`
---
-ALTER TABLE `school_has_snt`
-  ADD PRIMARY KEY (`idsnt`,`emiscode`,`year`), ADD KEY `fk_school_has_snt_snt1_idx` (`idsnt`), ADD KEY `fk_school_has_snt_school1_idx` (`emiscode`);
-
---
--- Indexes for table `snt`
---
-ALTER TABLE `snt`
-  ADD PRIMARY KEY (`idsnt`), ADD UNIQUE KEY `employment_number_UNIQUE` (`employment_number`);
-
---
--- Indexes for table `zone`
---
-ALTER TABLE `zone`
-  ADD PRIMARY KEY (`idzone`), ADD KEY `fk_zone_district1_idx` (`district_iddistrict`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `disability`
---
-ALTER TABLE `disability`
-  MODIFY `iddisability` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
---
--- AUTO_INCREMENT for table `disability_category`
---
-ALTER TABLE `disability_category`
-  MODIFY `iddisability_category` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
---
--- AUTO_INCREMENT for table `disability_has_level`
---
-ALTER TABLE `disability_has_level`
-  MODIFY `iddisability_has_level` int(4) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT for table `district`
---
-ALTER TABLE `district`
-  MODIFY `iddistrict` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `fos_user`
---
-ALTER TABLE `fos_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `guardian`
---
-ALTER TABLE `guardian`
-  MODIFY `idguardian` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=30;
---
--- AUTO_INCREMENT for table `level`
---
-ALTER TABLE `level`
-  MODIFY `idlevel` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
---
--- AUTO_INCREMENT for table `need`
---
-ALTER TABLE `need`
-  MODIFY `idneed` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=38;
---
--- AUTO_INCREMENT for table `performance`
---
-ALTER TABLE `performance`
-  MODIFY `rec_id` bigint(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `snt`
---
-ALTER TABLE `snt`
-  MODIFY `idsnt` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Special needs teacher\n',AUTO_INCREMENT=1226;
---
 -- Constraints for dumped tables
 --
 
@@ -7241,96 +6933,96 @@ ALTER TABLE `snt`
 -- Constraints for table `disability`
 --
 ALTER TABLE `disability`
-ADD CONSTRAINT `fk_disability_disability_category1` FOREIGN KEY (`iddisability_category`) REFERENCES `disability_category` (`iddisability_category`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_disability_disability_category1` FOREIGN KEY (`iddisability_category`) REFERENCES `disability_category` (`iddisability_category`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `disability_has_level`
 --
 ALTER TABLE `disability_has_level`
-ADD CONSTRAINT `fk_disability_has_level_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_disability_has_level_level1` FOREIGN KEY (`idlevel`) REFERENCES `level` (`idlevel`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_disability_has_level_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_disability_has_level_level1` FOREIGN KEY (`idlevel`) REFERENCES `level` (`idlevel`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `disability_has_need`
 --
 ALTER TABLE `disability_has_need`
-ADD CONSTRAINT `fk_need_has_disability_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_need_has_disability_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_need_has_disability_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_need_has_disability_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lwd`
 --
 ALTER TABLE `lwd`
-ADD CONSTRAINT `fk_lwd_guardian1` FOREIGN KEY (`idguardian`) REFERENCES `guardian` (`idguardian`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_lwd_guardian1` FOREIGN KEY (`idguardian`) REFERENCES `guardian` (`idguardian`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lwd_belongs_to_school`
 --
 ALTER TABLE `lwd_belongs_to_school`
-ADD CONSTRAINT `fk_lwd_has_school_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_lwd_has_school_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_lwd_has_school_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_lwd_has_school_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lwd_has_disability`
 --
 ALTER TABLE `lwd_has_disability`
-ADD CONSTRAINT `fk_lwd_has_disability_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_lwd_has_disability_disability_has_level1` FOREIGN KEY (`idlevel`, `iddisability`) REFERENCES `disability_has_level` (`idlevel`, `iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_lwd_has_disability_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_lwd_has_disability_disability1` FOREIGN KEY (`iddisability`) REFERENCES `disability` (`iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_lwd_has_disability_disability_has_level1` FOREIGN KEY (`idlevel`, `iddisability`) REFERENCES `disability_has_level` (`idlevel`, `iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_lwd_has_disability_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `lwd_has_disability_has_need`
 --
 ALTER TABLE `lwd_has_disability_has_need`
-ADD CONSTRAINT `fk_lwd_has_disability_has_need_lwd_has_disability1` FOREIGN KEY (`idlwd`, `iddisability`) REFERENCES `lwd_has_disability` (`idlwd`, `iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_lwd_has_disability_has_need_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_lwd_has_disability_has_need_lwd_has_disability1` FOREIGN KEY (`idlwd`, `iddisability`) REFERENCES `lwd_has_disability` (`idlwd`, `iddisability`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_lwd_has_disability_has_need_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `performance`
 --
 ALTER TABLE `performance`
-ADD CONSTRAINT `fk_performance_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_performance_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_performance_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_performance_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `room_state`
 --
 ALTER TABLE `room_state`
-ADD CONSTRAINT `fk_facility_state_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_facility_state_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `school`
 --
 ALTER TABLE `school`
-ADD CONSTRAINT `fk_school_district1` FOREIGN KEY (`iddistrict`) REFERENCES `district` (`iddistrict`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_school_zone1` FOREIGN KEY (`idzone`) REFERENCES `zone` (`idzone`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_school_district1` FOREIGN KEY (`iddistrict`) REFERENCES `district` (`iddistrict`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_school_zone1` FOREIGN KEY (`idzone`) REFERENCES `zone` (`idzone`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `school_exit`
 --
 ALTER TABLE `school_exit`
-ADD CONSTRAINT `fk_dropout_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_dropout_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_dropout_lwd1` FOREIGN KEY (`idlwd`) REFERENCES `lwd` (`idlwd`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_dropout_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `school_has_need`
 --
 ALTER TABLE `school_has_need`
-ADD CONSTRAINT `fk_school_has_need_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_school_has_need_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_school_has_need_need1` FOREIGN KEY (`idneed`) REFERENCES `need` (`idneed`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_school_has_need_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `school_has_snt`
 --
 ALTER TABLE `school_has_snt`
-ADD CONSTRAINT `fk_school_has_snt_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE,
-ADD CONSTRAINT `fk_school_has_snt_snt1` FOREIGN KEY (`idsnt`) REFERENCES `snt` (`idsnt`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_school_has_snt_school1` FOREIGN KEY (`emiscode`) REFERENCES `school` (`emiscode`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_school_has_snt_snt1` FOREIGN KEY (`idsnt`) REFERENCES `snt` (`idsnt`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `zone`
 --
 ALTER TABLE `zone`
-ADD CONSTRAINT `fk_zone_district1` FOREIGN KEY (`district_iddistrict`) REFERENCES `district` (`iddistrict`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_zone_district1` FOREIGN KEY (`iddistrict`) REFERENCES `district` (`iddistrict`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

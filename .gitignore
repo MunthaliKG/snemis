@@ -1,12 +1,9 @@
-
 /app/cache/*
 /app/config/parameters.yml
 /app/logs/*
 /app/phpunit.xml
 /bin/
 /composer.phar
-/web/bundles/
 /nbproject/
 /vendor/
-/web/bootstrap/
 /pull-snemis.bat
